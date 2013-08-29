@@ -25,7 +25,7 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
     function processImage(randomPic) {
         Caman(canvasEl, "" + randomPic, function () {
             // manipulate image here
-            this['lomo']();
+            this['sinCity']();
             this.render();
         });
     }
