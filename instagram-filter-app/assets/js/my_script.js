@@ -1,4 +1,4 @@
-KISSY.ready(function(S) {
+KISSY.use('assets/js/caman.js', function(S, Caman) {
     var $ = S.all;
 
     var canvasEl = $('#J_Canvas')[0],
@@ -29,6 +29,4 @@ KISSY.ready(function(S) {
             this.render();
         });
     }
-
-
 });
