@@ -1,5 +1,6 @@
 KISSY.use('assets/js/caman.js', function(S, Caman) {
-    var $ = S.all;
+    var $ = S.all,
+         E = S.Event;
 
     var setUp = {
         initialize: function() {
@@ -15,7 +16,8 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
             }
         },
         setUpFileReader: function() {
-            console.log('file reader');
+            var self = this;
+
             var canvasContainer = $('#J_CanvasContainer');
             var opts = {
                 dragClass: "drag",
@@ -66,11 +68,11 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                             }
 
                             // 创建一个Canvas
-                            originalCanvas = $('<canvas id="J_Canvas">');
-                            var originalContext = originalCanvas[0].getContext('2d');
+                            self.originalCanvas = $('<canvas id="J_Canvas">');
+                            var originalContext = self.originalCanvas[0].getContext('2d');
 
                             // 设置canvas元素的宽度、高度、外边距
-                            originalCanvas.attr({
+                            self.originalCanvas.attr({
                                 width: newWidth,
                                 height: newHeight
                             });
@@ -80,7 +82,7 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
 
                             // 移除图片元素（已经不需要了，接下来使用canvas处理就好）
                             img = null;
-                            canvasContainer.append(originalCanvas);
+                            canvasContainer.append(self.originalCanvas);
 
                         };
 
@@ -98,37 +100,30 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
             console.log('file input');
         },
         setUpFilter: function() {
+            var self = this;
 
+            E.delegate(document, 'click', '.J_PresetStyle', function(e) {
+                var style = $(e.currentTarget).attr('data-preset');
+                e.preventDefault();
+
+                processImage(style);
+            });
+
+            function processImage(effectName) {
+                if (!self.originalCanvas) {
+                    alert('先上图！');
+                    return;
+                }
+
+                Caman(self.originalCanvas[0], function () {
+                    // manipulate image here
+                    effectName in this && this[effectName]();
+                    this.render();
+                });
+            }
         }
     };
     setUp.initialize();
 
-//    var canvasEl = $('#J_Canvas')[0],
-//        picArr = [
-//            '../instagram-filter-app/assets/img/horse.jpg',
-//            '../instagram-filter-app/assets/img/010.jpg'
-//        ];
-//
-//    processImage(getRandomPic());
-//
-//
-//    $('.change-image-btn').on('click', function() {
-//        var randomPic = getRandomPic();
-//
-//        processImage(randomPic);
-//    });
-//
-//    function getRandomPic() {
-//        var randomIndex = Math.round(Math.random());
-//
-//        return picArr[randomIndex];
-//    }
-//
-//    function processImage(randomPic) {
-//        Caman(canvasEl, "" + randomPic, function () {
-//            // manipulate image here
-//            this['sinCity']();
-//            this.render();
-//        });
-//    }
+
 });
