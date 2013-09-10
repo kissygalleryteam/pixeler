@@ -39,8 +39,31 @@ KISSY.add(function(S){
         window.Int32Array = TypedArray;
     })();
 
-
+    var $ = S.all;
     var Caman = window.Caman;
+
+    // plugins
+    Caman.Plugin.register("rotate", function(width, height, x, y) {
+        var canvas, ctx;
+        canvas = $('<canvas id="J_Canvas">')[0];
+        canvas.width = 100;
+        canvas.height = 100;
+
+        ctx = canvas.getContext('2d');
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.rotate(20*Math.PI/180);
+        ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height);
+        return this.replaceCanvas(canvas, true);
+    });
+    Caman.Filter.register("rotate", function(width, height, x, y) {
+        if (x == null) {
+            x = 0;
+        }
+        if (y == null) {
+            y = 0;
+        }
+        return this.processPlugin("rotate", Array.prototype.slice.call(arguments, 0));
+    });
 
     delete window.Caman;
     return Caman;

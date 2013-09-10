@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>canvas与图片旋转</title>
+<style type="text/css">
+.l{float:left;}.r{float:right;}.fix{overflow:hidden; zoom:1;}
+.rot_box{width:512px; margin:0 auto; font-size:84%;}
+.image_box{text-align:center;}
+.image_box img{margin-top:-150px;}
+</style>
+<script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js"></script>
+<!--[if IE]><script type="text/javascript" src="../js/excanvas.js"></script><![endif]-->
+<script type="text/javascript">
+window.onload = function(){
+    var $ = KISSY.all;
+
+	var param = {
+		right: document.getElementById("rotRight"),
+		left: document.getElementById("rotLeft"),
+		img: document.getElementById("rotImg"),
+		cv: document.getElementById("canvas"),
+		rot: 0
+	};
+	var rotate = function(canvas,img,rot){
+		//获取图片的高宽
+		var w = img.width;
+		var h = img.height;
+		//角度转为弧度
+		if(!rot){
+			rot = 0;	
+		}
+		var rotation = Math.PI * rot / 180;
+		var c = Math.round(Math.cos(rotation) * 1000) / 1000;
+		var s = Math.round(Math.sin(rotation) * 1000) / 1000;
+		//旋转后canvas标签的大小
+		canvas.height = Math.abs(c*h) + Math.abs(s*w);
+		canvas.width = Math.abs(c*w) + Math.abs(s*h);
+		//绘图开始
+		var context = canvas.getContext("2d");
+		context.save();
+		//改变中心点
+		if (rotation <= Math.PI/2) {
+			context.translate(s*h,0);
+		} else if (rotation <= Math.PI) {
+			context.translate(canvas.width,-c*h);
+		} else if (rotation <= 1.5*Math.PI) {
+			context.translate(-c*w,canvas.height);
+		} else {
+			context.translate(0,-s*w);
+		}
+		//旋转90°
+		context.rotate(rotation);
+		//绘制
+		context.drawImage(img, 0, 0, w, h);
+
+
+
+
+        //转换
+        var dataUrl = canvas.toDataURL("image/jpg");
+        var newImage = new Image();
+        newImage.onload = function() {
+            $('body').append(newImage);
+        }
+        newImage.src = dataUrl;
+
+
+		context.restore();
+		img.style.display = "none";
+
+
+
+	}
+	var fun = {
+		right: function(){
+			param.rot += 90;
+			rotate(param.cv, param.img, param.rot);
+			if(param.rot === 270){
+				param.rot = -90;	
+			}	
+		},
+		left: function(){
+			param.rot -= 90;
+			if(param.rot === -90){
+				param.rot = 270;	
+			}
+			rotate(param.cv, param.img, param.rot);			
+		}
+	};
+	param.right.onclick = function(){
+		fun.right();
+		return false;
+	};
+	param.left.onclick = function(){
+		fun.left();
+		return false;
+	};
+};
+</script>
+</head>
+
+<body>
+<div class="rot_box">
+    <p class="fix f9 mb10"><a id="rotLeft" class="l" href="javascript:void(0);">&lt;&lt;向左转</a><a id="rotRight" class="r" href="javascript:void(0);">向右转&gt;&gt;</a></p>
+    <div class="image_box">
+        <canvas id="canvas"></canvas>
+        <img id="rotImg" src="../img/t.jpg" />
+    </div>
+</div>
+</body>
+</html>

@@ -6,19 +6,21 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
         initialize: function() {
             this.setUpFileUploadWay();
             this.setUpFilter();
+            this.setupDonwload();
         },
         setUpFileUploadWay: function() {
+            var self = this;
+
             try {
-                var reader = new FileReader();
-                this.setUpFileReader();
+                self.reader = new FileReader();
+                self.setUpFileReader();
             }catch(e) {
-                this.setUpInput();
+                alert('no support');
             }
         },
         setUpFileReader: function() {
             var self = this;
 
-            var canvasContainer = $('#J_CanvasContainer');
             var opts = {
                 dragClass: "drag",
                 accept: false,
@@ -33,94 +35,86 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                         return /^image/.test(file.type);
                     },
                     load: function(e, file) {
-                        var img = new Image(),
-                            imgWidth, newWidth,
-                            imgHeight, newHeight,
-                            ratio;
-
-                        var maxWidth = maxHeight = 500;
-                        // 删除容器内的canvas元素
-                        canvasContainer.all('canvas').remove();
-
-                        //图片读取成功后触发，这样才能找到图片原始宽度和高度
-                        img.onload = function() {
-
-                            imgWidth  = this.width;
-                            imgHeight = this.height;
-
-                            // 控制在500*500px
-                            if (imgWidth >= maxWidth || imgHeight >= maxHeight) {
-                                if (imgWidth > imgHeight) {
-                                    //ratio是希望处理图片时，依旧可以保证比例的正确
-                                    ratio = imgWidth / maxWidth;
-                                    newWidth = maxWidth;
-                                    newHeight = imgHeight / ratio;
-
-                                } else {
-                                    ratio = imgHeight / maxHeight;
-                                    newHeight = maxHeight;
-                                    newWidth = imgWidth / ratio;
-                                }
-
-                            } else {
-                                newHeight = imgHeight;
-                                newWidth = imgWidth;
-                            }
-
-                            // 创建一个Canvas
-                            self.originalCanvas = $('<canvas id="J_Canvas">');
-                            var originalContext = self.originalCanvas[0].getContext('2d');
-
-                            // 设置canvas元素的宽度、高度、外边距
-                            self.originalCanvas.attr({
-                                width: newWidth,
-                                height: newHeight
-                            });
-
-                            // 将图片绘制到canvas元素中
-                            originalContext.drawImage(this, 0, 0, newWidth, newHeight);
-
-                            // 移除图片元素（已经不需要了，接下来使用canvas处理就好）
-                            img = null;
-                            canvasContainer.append(self.originalCanvas);
-
-                        };
-
-                        // 设置图片的src，直接读取二进制图片数据
-                        // 触发img的load事件
-
-                        img.src = e.target.result;
-
+                        self.readFile(file);
                     }
                 }
             };
-            FileReaderJS.setupDrop(canvasContainer[0], opts);
+            FileReaderJS.setupDrop($('#J_CanvasContainer')[0], opts);
+            FileReaderJS.setupInput($('#J_Input')[0], opts);
         },
-        setUpInput: function() {
-            console.log('file input');
+        drawCanvas: function(dataURL) {
+            var img = new Image();
+
+            img.onload = function(e) {
+                var width = 100,
+                    height = 100;
+
+                var canvas = $('<canvas id="J_Canvas">');
+                var context = canvas[0].getContext('2d');
+
+                //设置canvas元素的宽度、高度、外边距
+                canvas.attr({
+                    width: width,
+                    height: height
+                });
+
+                // 将图片绘制到canvas元素中
+                context.drawImage(this, 0, 0, width, height);
+                $('#J_CanvasContainer').append(canvas);
+            };
+
+            img.src = dataURL;
+
         },
+        readFile: function(file) {
+            var self = this;
+
+            self.reader.onload = function(e) {
+                self.drawCanvas(e.target.result);
+            };
+
+            self.reader.readAsDataURL(file);
+        },
+//        setUpInput: function() {
+//            FileReaderJS.setupInput(document.getElementById('file-input'), opts);
+//        },
         setUpFilter: function() {
             var self = this;
 
             E.delegate(document, 'click', '.J_PresetStyle', function(e) {
                 var style = $(e.currentTarget).attr('data-preset');
                 e.preventDefault();
+                console.log('clicked');
 
                 processImage(style);
             });
 
             function processImage(effectName) {
-                if (!self.originalCanvas) {
+                if (!$('#J_CanvasContainer canvas').length) {
                     alert('先上图！');
                     return;
                 }
 
-                Caman(self.originalCanvas[0], function () {
+                Caman($('#J_Canvas')[0], function () {
                     // manipulate image here
                     effectName in this && this[effectName]();
                     this.render();
+
+
+//                      console.dir(Caman);
+//                    console.log((new Caman.Pixel()).getPixel(0, 0));
                 });
             }
+        },
+        setupDonwload: function() {
+            $('#J_Download').on('click', function(e) {
+                var target = $(e.currentTarget);
+
+                var dataURL = $('#J_CanvasContainer canvas')[0].toDataURL("image/png;base64;");
+                target.attr('href', dataURL);
+
+                e.preventDefault();
+            });
         }
     };
     setUp.initialize();

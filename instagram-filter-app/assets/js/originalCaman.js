@@ -302,7 +302,7 @@ KISSY.add(function() {
             return this.finishInit();
         };
 
-        Caman.prototype.finishInit = function() {
+        Caman.prototype.finishInit = function(no_repeat) {
             var pixel, _i, _len, _ref;
             if (this.context == null) {
                 this.context = this.canvas.getContext('2d');
@@ -326,7 +326,10 @@ KISSY.add(function() {
                 height: this.canvas.height
             };
             Store.put(this.id, this);
-            return this.callback.call(this, this);
+            if (!no_repeat) {
+                return this.callback.call(this, this);
+            }
+
         };
 
         Caman.prototype.assignId = function() {
@@ -386,12 +389,12 @@ KISSY.add(function() {
             return this.image.getAttribute('data-caman-hidpi');
         };
 
-        Caman.prototype.replaceCanvas = function(newCanvas) {
+        Caman.prototype.replaceCanvas = function(newCanvas, no_repeat) {
             var oldCanvas;
             oldCanvas = this.canvas;
             this.canvas = newCanvas;
             oldCanvas.parentNode.replaceChild(this.canvas, oldCanvas);
-            return this.finishInit();
+            return this.finishInit(no_repeat);
         };
 
         Caman.prototype.render = function(callback) {
