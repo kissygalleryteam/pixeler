@@ -98,6 +98,7 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                 Caman($('#J_Canvas')[0], function () {
                     // manipulate image here
                     effectName in this && this[effectName]();
+
                     this.render();
 
                 });
