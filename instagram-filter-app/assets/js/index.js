@@ -84,10 +84,10 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
             E.delegate(document, 'click', '.J_PresetStyle', function(e) {
                 var style = $(e.currentTarget).attr('data-preset');
                 e.preventDefault();
-                console.log('clicked');
 
                 processImage(style);
             });
+
 
             function processImage(effectName) {
                 if (!$('#J_CanvasContainer canvas').length) {
@@ -95,8 +95,17 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                     return;
                 }
 
-                Caman($('#J_Canvas')[0], function () {
+                Caman($('#J_CanvasContainer canvas')[0], function () {
                     // manipulate image here
+//                    if(effectName == 'rotate') {
+//                        this.resize({
+//                            width: 500,
+//                            height: 300
+//                        });
+//                    } else {
+//                        effectName in this && this[effectName]();
+//                    }
+
                     effectName in this && this[effectName]();
 
                     this.render();
