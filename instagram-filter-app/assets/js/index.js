@@ -100,9 +100,6 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                     effectName in this && this[effectName]();
                     this.render();
 
-
-//                      console.dir(Caman);
-//                    console.log((new Caman.Pixel()).getPixel(0, 0));
                 });
             }
         },
@@ -113,7 +110,6 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
                 var dataURL = $('#J_CanvasContainer canvas')[0].toDataURL("image/png;base64;");
                 target.attr('href', dataURL);
 
-                e.preventDefault();
             });
         }
     };
