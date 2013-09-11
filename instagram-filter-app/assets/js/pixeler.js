@@ -27,6 +27,7 @@ KISSY.add( function(S, Caman) {
 
             img.src = dataURL;
 
+
         },
         processImage: function(effectName,angle, canvas, img, callback) {
             if (!$('#J_CanvasContainer canvas').length) {

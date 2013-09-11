@@ -4,6 +4,6 @@ KISSY.config({
     packages:[{
         name:'assets',
         debug:true,
-        path: 'http://lingwu.etao.com/pixeler/instagram-filter-app/'
+        path: '../instagram-filter-app/'
     }]
 });

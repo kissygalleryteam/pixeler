@@ -14,7 +14,7 @@ no problem！Pixeler 都可以帮你实现！
 
 ## 使用方法
 
-以下以将一张图片旋转90度作为示例
+1.以将一张图片旋转90度作为示例
 
 引入相应文件后，添加以下代码
 
@@ -35,3 +35,5 @@ no problem！Pixeler 都可以帮你实现！
 回调函数内的dataURL就是原图旋转90度后的二进制数据（经过base64编码）了。
 
 如果你能提供未编码的二进制数据，那得先转为base64编码过的dataURL，参考[base64转换工具](https://github.com/dankogai/js-base64)。
+
+本插件修改自[CamanJS](https://github.com/meltingice/CamanJS)。
