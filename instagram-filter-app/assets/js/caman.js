@@ -53,7 +53,7 @@ KISSY.add(function(S){
 //        ctx.rotate(angle*Math.PI/180);
 //        ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height);
 
-        var canvas =  $('<canvas id="J_Canvas" >')[0];
+        var canvas =  $('<canvas >')[0];
 
         //获取图片的高宽
         var w = oldCanvas.width;
@@ -85,9 +85,6 @@ KISSY.add(function(S){
         context.rotate(rotation);
         //绘制
         context.drawImage(img, 0, 0, w, h);
-
-        // 垃圾回收
-        img = null
 
         return this.replaceCanvas(canvas, true);
     });

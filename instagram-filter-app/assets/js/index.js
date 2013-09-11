@@ -41,14 +41,14 @@ KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
                     }
                 }
             };
-            FileReaderJS.setupDrop($('#J_CanvasContainer')[0], opts);
+//            FileReaderJS.setupDrop($('#J_CanvasContainer')[0], opts);
             FileReaderJS.setupInput($('#J_Input')[0], opts);
         },
         readFile: function(file) {
             var self = this;
 
             self.reader.onload = function(e) {
-                self.pixeler.rotateImage(e.target.result, 90, function(dataURL) {
+                self.pixeler.rotateImage(e.target.result, 180, function(dataURL) {
                     $('#J_Download').attr('href', dataURL);
                 });
             };

@@ -3,7 +3,9 @@ KISSY.add( function(S, Caman) {
          E = S.Event;
 
     var Pixeler = function() {
-
+        if(!$('#J_CanvasContainer').length) {
+            $('body').append('<div id="J_CanvasContainer" class="canvas-container" style="display: none;"></div>');
+        }
     };
 
     S.augment(Pixeler, {
@@ -15,12 +17,12 @@ KISSY.add( function(S, Caman) {
                 var width = this.width,
                     height = this.height;
 
-                var canvas = $('<canvas id="J_Canvas" width="'+ width +'" height="'+ height +'">');
+                var canvas = $('<canvas width="'+ width +'" height="'+ height +'">');
                 var context = canvas[0].getContext('2d');
 
                 // 将图片绘制到canvas元素中
                 context.drawImage(this, 0, 0, width, height);
-                $('#J_CanvasContainer').append(canvas);
+                $('#J_CanvasContainer').empty().append(canvas);
 
                 self.processImage('rotate', angle, canvas[0], this, callback);
             };
