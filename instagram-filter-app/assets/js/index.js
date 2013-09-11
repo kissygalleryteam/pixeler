@@ -1,9 +1,11 @@
-KISSY.use('assets/js/caman.js', function(S, Caman) {
+KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
     var $ = S.all,
          E = S.Event;
 
     var setUp = {
         initialize: function() {
+            this.pixeler = new Pixeler();
+
             this.setUpFileUploadWay();
             this.setUpFilter();
             this.setupDonwload();
@@ -42,76 +44,26 @@ KISSY.use('assets/js/caman.js', function(S, Caman) {
             FileReaderJS.setupDrop($('#J_CanvasContainer')[0], opts);
             FileReaderJS.setupInput($('#J_Input')[0], opts);
         },
-        drawCanvas: function(dataURL) {
-            var img = new Image();
-
-            img.onload = function(e) {
-                var width = 100,
-                    height = 100;
-
-                var canvas = $('<canvas id="J_Canvas">');
-                var context = canvas[0].getContext('2d');
-
-                //设置canvas元素的宽度、高度、外边距
-                canvas.attr({
-                    width: width,
-                    height: height
-                });
-
-                // 将图片绘制到canvas元素中
-                context.drawImage(this, 0, 0, width, height);
-                $('#J_CanvasContainer').append(canvas);
-            };
-
-            img.src = dataURL;
-
-        },
         readFile: function(file) {
             var self = this;
 
             self.reader.onload = function(e) {
-                self.drawCanvas(e.target.result);
+                self.pixeler.rotateImage(e.target.result, 90, function(dataURL) {
+                    $('#J_Download').attr('href', dataURL);
+                });
             };
-
             self.reader.readAsDataURL(file);
         },
-//        setUpInput: function() {
-//            FileReaderJS.setupInput(document.getElementById('file-input'), opts);
-//        },
         setUpFilter: function() {
             var self = this;
 
             E.delegate(document, 'click', '.J_PresetStyle', function(e) {
-                var style = $(e.currentTarget).attr('data-preset');
+                var effectName = $(e.currentTarget).attr('data-preset');
                 e.preventDefault();
 
-                processImage(style);
+                self.pixeler.processImage(effectName);
             });
 
-
-            function processImage(effectName) {
-                if (!$('#J_CanvasContainer canvas').length) {
-                    alert('先上图！');
-                    return;
-                }
-
-                Caman($('#J_CanvasContainer canvas')[0], function () {
-                    // manipulate image here
-//                    if(effectName == 'rotate') {
-//                        this.resize({
-//                            width: 500,
-//                            height: 300
-//                        });
-//                    } else {
-//                        effectName in this && this[effectName]();
-//                    }
-
-                    effectName in this && this[effectName]();
-
-                    this.render();
-
-                });
-            }
         },
         setupDonwload: function() {
             $('#J_Download').on('click', function(e) {
