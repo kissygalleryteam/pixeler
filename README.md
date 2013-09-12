@@ -65,3 +65,4 @@ no problem！Pixeler 都可以帮你实现！
            });
 
 
+浏览器支持：IE10+、FF22.0+、chrome28.0+、safari6.0+

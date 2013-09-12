@@ -4,6 +4,6 @@ KISSY.config({
     packages:[{
         name:'assets',
         debug:true,
-        path: '../instagram-filter-app/'
+        path: './'
     }]
 });
