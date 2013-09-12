@@ -14,26 +14,54 @@ no problem！Pixeler 都可以帮你实现！
 
 ## 使用方法
 
-1.以将一张图片旋转90度作为示例
+1. 将一张图片旋转90度
 
-引入相应文件后，添加以下代码
+   引入pixeler.js和originalCaman.js后，添加以下代码
 
-    KISSY.use('pixeler.js', function(S, Pixeler) {
-        var pixeler = new Pixeler();
+       KISSY.use('pixeler.js', function(S, Pixeler) {
+           var pixeler = new Pixeler();
 
-        var reader = new FileReader();
+           var reader = new FileReader();
 
-        reader.onload = function(e) {
-            pixeler.rotateImage(e.target.result, 90, function(dataURL) {
-                alert(dataURL);
-            });
-        };
+           reader.onload = function(e) {
+               pixeler.processImage('rotate', {
+                    dataURL: e.target.result,
+                    angle: 180,
+                    type: 'jpeg',
+                    callback: function(dataURL) {
+                        $('#J_Download').attr('href', dataURL);
+                    }
+               });
+           };
 
-        reader.readAsDataURL(file); //file对象可由input或者FileReader获得
-    });
+           reader.readAsDataURL(file); //file对象可由input或者FileReader获得
+       });
 
-回调函数内的dataURL就是原图旋转90度后的二进制数据（经过base64编码）了。
+   回调函数内的dataURL就是原图旋转90度后的二进制数据（经过base64编码）了。
 
-如果你能提供未编码的二进制数据，那得先转为base64编码过的dataURL，参考[base64转换工具](https://github.com/dankogai/js-base64)。
+   如果你能提供未编码的二进制数据，那得先转为base64编码过的dataURL，参考[base64转换工具](https://github.com/dankogai/js-base64)。
 
-本插件修改自[CamanJS](https://github.com/meltingice/CamanJS)。
+   本插件修改自[CamanJS](https://github.com/meltingice/CamanJS)。
+
+2. 给图片添加lomo滤镜，更多滤镜效果参考[Caman滤镜](http://camanjs.com/examples/)。
+
+    引入pixeler.js和originalCaman.js后，添加以下代码
+
+           KISSY.use('pixeler.js', function(S, Pixeler) {
+               var pixeler = new Pixeler();
+
+               var reader = new FileReader();
+
+               reader.onload = function(e) {
+                   pixeler.processImage('lomo', {
+                        dataURL: e.target.result,
+                        callback: function(dataURL) {
+                            $('#J_Download').attr('href', dataURL);
+                        }
+                   });
+               };
+
+               reader.readAsDataURL(file); //file对象可由input或者FileReader获得
+           });
+
+
