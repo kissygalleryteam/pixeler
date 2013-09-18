@@ -34,6 +34,9 @@
         #J_Download {
             margin-left: 20px;
         }
+        .filter {
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -45,9 +48,17 @@
         <!--<a href="" class="change-image-btn J_PresetStyle" data-preset="sinCity">Sin City</a>-->
         <!--<a href="" class="change-image-btn J_PresetStyle" data-preset="rotate">rotate</a>-->
     </div>
-
-    <div id="J_InputContainer" class="input-container"><input id="J_Input" type="file"/><a href="" id="J_Download" _target="_blank">下载我</a></div>
-</div>
+    <div id="J_InputContainer" class="input-container filter"><span>拖入一张图片</span><input id="J_Input" type="file"/><a href="" id="J_Download" download="photo.png" target="_blank">下载我</a></div>
+    <div class="filter">
+        <span>输入图片的url</span>
+        <input type="text" id="J_picUrl" />
+    </div>
+    <div class="addlogo filter">
+        <span>水印内容</span>
+        <input  type="text" id="J_logoText"/>
+        <button id="J_addLogoText">确定</button>
+    </div>
+    </div>
 
 <script src="http://a.tbcdn.cn/s/kissy/1.3.0/kissy-min.js"></script>
 <script src="assets/js/filereader.min.js"></script>
