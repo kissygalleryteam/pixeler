@@ -14,7 +14,7 @@ no problem！Pixeler 都可以帮你实现！
 
 ## 使用方法
 
-1. 将一张图片旋转90度
+1. 将一张图片旋转180度
 
    引入pixeler.js和originalCaman.js后，添加以下代码
 
