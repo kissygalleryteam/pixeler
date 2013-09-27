@@ -61,6 +61,22 @@ KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
                     }
                 });
 
+                var dataURL =  $('#J_Download').attr('href', dataURL) || e.target.result;
+                $('#J_EffectBtn span').on('click', function(e) {
+                    var target = $(e.currentTarget),
+                        effectName = target.text(),
+                        angle = target.attr('data-angle');
+
+                    self.pixeler.processImage(effectName, {
+                        dataURL: dataURL,
+                        angle: angle,
+                        type: 'jpeg',
+                        callback: function(dataURL) {
+                            $('#J_Download').attr('href', dataURL);
+                        }
+                    });
+                });
+
             };
             self.reader.readAsDataURL(file);
         },
