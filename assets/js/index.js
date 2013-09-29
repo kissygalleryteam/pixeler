@@ -49,8 +49,9 @@ KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
         readFile: function(file) {
             var self = this;
 
+            var loading = $('<div id="J_Loading">');
+            loading.appendTo('.main');
             self.reader.onload = function(e) {
-
 
                 self.pixeler.processImage('rotate', {
                     dataURL: e.target.result,
@@ -58,6 +59,8 @@ KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
                     type: 'jpeg',
                     callback: function(dataURL) {
                         $('#J_Download').attr('href', dataURL);
+
+                        loading.remove();
                     }
                 });
 
@@ -67,12 +70,14 @@ KISSY.use('assets/js/pixeler.js', function(S, Pixeler) {
                         effectName = target.text(),
                         angle = target.attr('data-angle');
 
+
                     self.pixeler.processImage(effectName, {
                         dataURL: dataURL,
                         angle: angle,
                         type: 'jpeg',
                         callback: function(dataURL) {
                             $('#J_Download').attr('href', dataURL);
+//                            loading.remove();
                         }
                     });
                 });
