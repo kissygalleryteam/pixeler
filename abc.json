@@ -1,12 +1,14 @@
 {
-  "name": "pixeler",
-  "version":"1.0",
-  "author": {
-    "name": "灵吾",
-    "email": "liuyunclouder@gmail.com",
-    "page": "https://github.com/liuyunclouder/"
-  },
-  "date":"",
-  "fileoverview":"",
-  "list":"./{version}/assets, ./{version}/index.html, ./{version}/index.js, ./index.html, ./README.md,./{version}/guide/index.md"
+    "name": "pixeler",
+    "version": "1.0",
+    "desc": "",
+    "cover": "",
+    "tag":"",
+    "author": {
+        "name": "灵吾",
+        "email": "liuyunclouder@gmail.com",
+        "page": "https://github.com/liuyunclouder/"
+    },
+    "type": "kissy-gallery",
+    "type-url": "http://gallery.kissyui.com/guide"
 }
