@@ -16,26 +16,24 @@ no problem！Pixeler 都可以帮你实现！
 
 1. 将一张图片旋转180度
 
-   引入pixeler.js和originalCaman.js后，添加以下代码
+           KISSY.use('gallery/pixeler/1.0/index', function(S, Pixeler) {
+               var pixeler = new Pixeler();
 
-       KISSY.use('pixeler.js', function(S, Pixeler) {
-           var pixeler = new Pixeler();
+               var reader = new FileReader();
 
-           var reader = new FileReader();
+               reader.onload = function(e) {
+                   pixeler.processImage('rotate', {
+                        dataURL: e.target.result,
+                        angle: 180,
+                        type: 'jpeg',
+                        callback: function(dataURL) {
+                            $('#J_Download').attr('href', dataURL);
+                        }
+                   });
+               };
 
-           reader.onload = function(e) {
-               pixeler.processImage('rotate', {
-                    dataURL: e.target.result,
-                    angle: 180,
-                    type: 'jpeg',
-                    callback: function(dataURL) {
-                        $('#J_Download').attr('href', dataURL);
-                    }
-               });
-           };
-
-           reader.readAsDataURL(file); //file对象可由input或者FileReader获得
-       });
+               reader.readAsDataURL(file); //file对象可由input或者FileReader获得
+           });
 
    回调函数内的dataURL就是原图旋转90度后的二进制数据（经过base64编码）了。
 
@@ -45,9 +43,8 @@ no problem！Pixeler 都可以帮你实现！
 
 2. 给图片添加lomo滤镜，更多滤镜效果参考[Caman滤镜](http://camanjs.com/examples/)。
 
-    引入pixeler.js和originalCaman.js后，添加以下代码
 
-           KISSY.use('pixeler.js', function(S, Pixeler) {
+           KISSY.use('gallery/pixeler/1.0/index', function(S, Pixeler) {
                var pixeler = new Pixeler();
 
                var reader = new FileReader();
